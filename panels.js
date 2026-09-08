@@ -79,7 +79,7 @@ var dock = new Panel;
 dock.location = "bottom";
 dock.height = 60;
 dock.floating = true;
-dock.hiding = "none";
+dock.hiding = (typeof dockAutohide !== "undefined" && dockAutohide) ? "autohide" : "none";
 dock.lengthMode = "fit";
 dock.alignment = "center";
 dock.opacity = "translucent";
