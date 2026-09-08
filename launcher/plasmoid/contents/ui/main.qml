@@ -14,6 +14,7 @@ PlasmoidItem {
     property string pendingQuery: ""
 
     Plasmoid.icon: "search"
+    Plasmoid.status: PlasmaCore.Types.HiddenStatus
     preferredRepresentation: compactRepresentation
     activationTogglesExpanded: false
 
