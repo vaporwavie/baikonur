@@ -1,0 +1,10 @@
+[Wallpaper]
+defaultWallpaperTheme=Next
+defaultFileSuffix=.png
+defaultWidth=1920
+defaultHeight=1080
+
+[AdaptiveTransparency]
+enabled=true
+[Settings]
+FallbackTheme=breeze-dark

@@ -1,0 +1,15 @@
+{
+  "KPackageStructure": "Plasma/Applet",
+  "KPlugin": {
+    "Id": "dev.luiz.baikonur",
+    "Name": "Baikonur",
+    "Description": "Launcher",
+    "Icon": "search",
+    "Category": "Application Launchers",
+    "License": "MIT",
+    "Version": "0.1",
+    "Authors": [{ "Name": "Luiz" }]
+  },
+  "X-Plasma-API-Minimum-Version": "6.0",
+  "X-Plasma-Provides": ["org.kde.plasma.launchermenu"]
+}

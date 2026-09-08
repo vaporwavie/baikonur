@@ -1,0 +1,9 @@
+[Unit]
+Description=Baikonur launcher daemon
+
+[Service]
+ExecStart=%h/.bun/bin/bun run %h/Workspace/baikonur/launcher/daemon/src/index.ts
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
