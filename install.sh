@@ -34,5 +34,7 @@ ln -sfn "$here/systemd/baikonur.service" "$HOME/.config/systemd/user/baikonur.se
 systemctl --user daemon-reload
 systemctl --user enable --now baikonur.service
 
+"$here/window-scale.sh"
+
 rm -rf "$tmp"
 echo "installed. now run: $here/apply.sh"

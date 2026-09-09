@@ -1,0 +1,12 @@
+{
+  "KPlugin": {
+    "Id": "baikonur-window-scale",
+    "Name": "Baikonur Window Scaling",
+    "Description": "Grow or shrink the active window proportionally",
+    "Icon": "preferences-system-windows",
+    "Version": "1.0"
+  },
+  "KPackageStructure": "KWin/Script",
+  "X-Plasma-API": "javascript",
+  "X-Plasma-MainScript": "code/main.js"
+}
