@@ -31,6 +31,9 @@ title.writeConfig("showTooltip", false);
 gap(top, 8);
 top.addWidget("org.kde.plasma.appmenu");
 
+var sp1 = top.addWidget("org.kde.plasma.panelspacer");
+sp1.currentConfigGroup = ["General"]; sp1.writeConfig("expanding", true);
+
 var music = top.addWidget("plasmusic-toolbar");
 music.currentConfigGroup = ["General"];
 music.writeConfig("iconInPanel", false);
@@ -43,8 +46,6 @@ music.writeConfig("maxSongWidthInPanel", 360);
 music.writeConfig("showWhenNoMedia", false);
 music.writeConfig("textScrollingEnabled", false);
 
-var sp1 = top.addWidget("org.kde.plasma.panelspacer");
-sp1.currentConfigGroup = ["General"]; sp1.writeConfig("expanding", true);
 var sp2 = top.addWidget("org.kde.plasma.panelspacer");
 sp2.currentConfigGroup = ["General"]; sp2.writeConfig("expanding", true);
 
