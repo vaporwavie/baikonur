@@ -98,6 +98,7 @@ tasks.writeConfig("launchers", [
 tasks.writeConfig("showOnlyCurrentScreen", false);
 tasks.writeConfig("groupingStrategy", 1);
 tasks.writeConfig("iconSpacing", 0);
+tasks.writeConfig("unhideOnAttention", false);
 
 var dockColor = dock.addWidget("luisbocanegra.panel.colorizer");
 dockColor.currentConfigGroup = ["General"];
