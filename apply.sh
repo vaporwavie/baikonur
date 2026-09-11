@@ -12,7 +12,6 @@ bak="$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc.bak.$(date +%Y%m%d%H%
 cp -a "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc" "$bak"
 echo "backup: $bak"
 
-plasma-apply-lookandfeel -a org.kde.breezedark.desktop >/dev/null
 plasma-apply-desktoptheme baikonur >/dev/null
 
 font='Geist,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
@@ -21,7 +20,7 @@ kwriteconfig6 --file kdeglobals --group General --key smallestReadableFont 'Geis
 kwriteconfig6 --file kdeglobals --group WM --key activeFont 'Geist,10,-1,5,600,0,0,0,0,0,0,0,0,0,0,1'
 
 sed -i -E "/^activate widget [0-9]+=/d" "$HOME/.config/kglobalshortcutsrc"
-busctl --user call org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell evaluateScript s "var dockAutohide = $autohide; $(cat "$here/panels.js")" | grep -v '^s ""$' || true
+busctl --user call org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell evaluateScript s "var dockAutohide = $autohide; var wallpaper = \"file://$HOME/.local/share/wallpapers/baikonur/\"; $(cat "$here/panels.js")" | grep -v '^s ""$' || true
 sleep 5
 if $autohide; then "$here/dock.sh" on; fi
 echo "panels applied. Undo: cp '$bak' ~/.config/plasma-org.kde.plasma.desktop-appletsrc && plasmashell --replace &"

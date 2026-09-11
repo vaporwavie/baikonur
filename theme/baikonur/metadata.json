@@ -1,5 +1,5 @@
 {
-  "KPlugin": { "Id": "baikonur", "Name": "Baikonur", "Description": "Breeze Dark without task frames", "License": "LGPL", "Version": "0.1", "Authors": [{"Name": "Luiz"}] },
+  "KPlugin": { "Id": "baikonur", "Name": "Baikonur", "Description": "Breeze without task frames, follows the system color scheme", "License": "LGPL", "Version": "0.1", "Authors": [{"Name": "Luiz"}] },
   "X-Plasma-API": "5.0",
-  "X-Plasma-FallbackTheme": "breeze-dark"
+  "X-Plasma-FallbackTheme": "breeze"
 }

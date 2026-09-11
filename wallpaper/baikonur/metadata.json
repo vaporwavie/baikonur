@@ -1,0 +1,3 @@
+{
+  "KPlugin": { "Id": "baikonur", "Name": "Baikonur", "Description": "Kitty background: #f0edec in light mode, black in dark mode", "License": "LGPL", "Version": "0.1", "Authors": [{"Name": "Luiz"}] }
+}

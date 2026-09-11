@@ -5,10 +5,11 @@ macOS-style Plasma 6 layout for powerstation: top bar with global menu, floating
 ## Layout
 
 - `install.sh` installs the third-party widgets (Panel Colorizer, Plasmusic Toolbar, Window Title), the `baikonur` desktop theme, Geist, the launcher widget, and the launcher daemon as a user service.
-- `apply.sh` applies Breeze Dark and the fonts, then rebuilds both panels from `panels.js` through the Plasma scripting API. It backs up the applet config first and prints the undo command. `--dock-autohide` builds the dock in autohide mode.
+- `apply.sh` applies the Baikonur desktop theme and the fonts, leaves the global color scheme alone (the panels follow whatever light or dark scheme is active), then rebuilds both panels from `panels.js` through the Plasma scripting API. It backs up the applet config first and prints the undo command. `--dock-autohide` builds the dock in autohide mode.
 - `dock.sh on|off` toggles dock autohide on the live layout. With autohide the dock reserves no space, so windows take everything below the top bar and the dock slides in from the bottom edge. It also unloads KWin's screenedge effect, which otherwise paints the Breeze glow bar on the dock's trigger edge, and `off` loads it again.
 - `panels.js` is the whole panel layout, including the Panel Colorizer settings as JSON.
-- `theme/baikonur` is Breeze Dark with an empty `tasks.svg`, so the dock draws no task frames. The margin hints in that file set the dock icon size.
+- `theme/baikonur` is Breeze with an empty `tasks.svg`, so the dock draws no task frames. It ships no `colors` file, so text and panel colors follow the active system color scheme (light or dark). The margin hints in that file set the dock icon size.
+- `wallpaper/baikonur` is a solid wallpaper package matching the kitty background: `#f0edec` in light mode, black in dark mode. Plasma picks `contents/images_dark` on its own when the color scheme is dark, and `apply.sh` sets it on every desktop.
 - `launcher/plasmoid` is the Baikonur widget: two floating Plasma dialogs, Alt+Space, talks to the daemon over localhost.
 - `launcher/daemon` is a Bun process on `@ff-labs/fff-bun`. Apps are indexed as stub files so fff frecency ranks them. Pins live in `~/.config/baikonur/pins.json`.
 

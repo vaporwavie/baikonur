@@ -7,4 +7,4 @@ defaultHeight=1080
 [AdaptiveTransparency]
 enabled=true
 [Settings]
-FallbackTheme=breeze-dark
+FallbackTheme=breeze
