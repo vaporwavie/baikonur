@@ -13,6 +13,10 @@ PlasmoidItem {
     property bool hasResults: false
     property string pendingQuery: ""
 
+    readonly property color bg: box.Kirigami.Theme.backgroundColor
+    readonly property color fg: box.Kirigami.Theme.textColor
+    function ink(alpha) { return Qt.rgba(fg.r, fg.g, fg.b, alpha); }
+
     Plasmoid.icon: "search"
     Plasmoid.status: PlasmaCore.Types.HiddenStatus
     preferredRepresentation: compactRepresentation
@@ -108,12 +112,15 @@ PlasmoidItem {
         }
 
         mainItem: Rectangle {
+            id: box
+            Kirigami.Theme.inherit: false
+            Kirigami.Theme.colorSet: Kirigami.Theme.View
             width: root.boxWidth
             height: 58
             radius: 12
-            color: "#151517"
+            color: root.bg
             border.width: 1
-            border.color: Qt.rgba(1, 1, 1, 0.14)
+            border.color: root.ink(0.14)
 
             TextInput {
                 id: field
@@ -123,8 +130,9 @@ PlasmoidItem {
                 verticalAlignment: TextInput.AlignVCenter
                 font.family: "Geist"
                 font.pixelSize: 20
-                color: "white"
-                selectionColor: Qt.rgba(1, 1, 1, 0.25)
+                color: root.fg
+                selectionColor: root.ink(0.25)
+                selectedTextColor: root.fg
                 clip: true
                 onTextChanged: root.query(text.trim())
                 Keys.onDownPressed: if (list.currentIndex < results.count - 1) list.currentIndex++
@@ -141,7 +149,7 @@ PlasmoidItem {
                     visible: field.text.length === 0
                     text: "Start typing…"
                     font: field.font
-                    color: Qt.rgba(1, 1, 1, 0.38)
+                    color: root.ink(0.38)
                 }
             }
         }
@@ -158,12 +166,14 @@ PlasmoidItem {
         y: win.y + win.height + 8
 
         mainItem: Rectangle {
+            Kirigami.Theme.inherit: false
+            Kirigami.Theme.colorSet: Kirigami.Theme.View
             width: root.boxWidth
             height: list.contentHeight + 20
             radius: 12
-            color: "#151517"
+            color: root.bg
             border.width: 1
-            border.color: Qt.rgba(1, 1, 1, 0.14)
+            border.color: root.ink(0.14)
 
             ListView {
                 id: list
@@ -172,7 +182,7 @@ PlasmoidItem {
                 model: results
                 interactive: false
                 highlightMoveDuration: 0
-                highlight: Rectangle { radius: 8; color: Qt.rgba(1, 1, 1, 0.09) }
+                highlight: Rectangle { radius: 8; color: root.ink(0.09) }
                 section.property: "section"
                 section.delegate: Item {
                             width: ListView.view.width
@@ -186,14 +196,14 @@ PlasmoidItem {
                                     width: 12; height: 12
                                     anchors.verticalCenter: parent.verticalCenter
                                     source: root.sectionIcons[section] || "view-list-details"
-                                    color: "white"
+                                    color: root.fg
                                 }
                                 Text {
                                     text: section
                                     font.family: "Geist"
                                     font.pixelSize: 12
                                     font.weight: Font.DemiBold
-                                    color: Qt.rgba(1, 1, 1, 0.85)
+                                    color: root.ink(0.85)
                                 }
                             }
                         }
@@ -222,14 +232,14 @@ PlasmoidItem {
                                         font.family: "Geist"
                                         font.pixelSize: 16
                                         font.weight: Font.Medium
-                                        color: "white"
+                                        color: root.fg
                                     }
                                     Text {
                                         text: row.subtitle
                                         visible: row.subtitle.length > 0
                                         font.family: "Geist"
                                         font.pixelSize: 12
-                                        color: Qt.rgba(1, 1, 1, 0.6)
+                                        color: root.ink(0.6)
                                     }
                                 }
                             }

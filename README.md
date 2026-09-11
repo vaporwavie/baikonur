@@ -10,7 +10,7 @@ macOS-style Plasma 6 layout for powerstation: top bar with global menu, floating
 - `panels.js` is the whole panel layout, including the Panel Colorizer settings as JSON.
 - `theme/baikonur` is Breeze with an empty `tasks.svg`, so the dock draws no task frames. It ships no `colors` file, so text and panel colors follow the active system color scheme (light or dark). The margin hints in that file set the dock icon size.
 - `wallpaper/baikonur` is a solid wallpaper package matching the kitty background: `#f0edec` in light mode, black in dark mode. Plasma picks `contents/images_dark` on its own when the color scheme is dark, and `apply.sh` sets it on every desktop.
-- `launcher/plasmoid` is the Baikonur widget: two floating Plasma dialogs, Alt+Space, talks to the daemon over localhost.
+- `launcher/plasmoid` is the Baikonur widget: two floating Plasma dialogs, Alt+Space, talks to the daemon over localhost. Colors come from the active color scheme (View set), so it follows light and dark like the panels.
 - `launcher/daemon` is a Bun process on `@ff-labs/fff-bun`. Apps are indexed as stub files so fff frecency ranks them. Pins live in `~/.config/baikonur/pins.json`.
 
 ## Notes
