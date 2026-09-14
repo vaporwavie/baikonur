@@ -12,7 +12,7 @@ bak="$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc.bak.$(date +%Y%m%d%H%
 cp -a "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc" "$bak"
 echo "backup: $bak"
 
-plasma-apply-desktoptheme baikonur >/dev/null
+"$here/theme.sh"
 
 font='Geist,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
 for k in font menuFont toolBarFont; do kwriteconfig6 --file kdeglobals --group General --key "$k" "$font"; done

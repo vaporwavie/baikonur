@@ -1,0 +1,6 @@
+[Unit]
+Description=Reapply the Baikonur desktop theme
+
+[Service]
+Type=oneshot
+ExecStart=%h/Workspace/baikonur/theme.sh

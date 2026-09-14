@@ -4,17 +4,19 @@ macOS-style Plasma 6 layout for powerstation: top bar with global menu, floating
 
 ## Layout
 
-- `install.sh` installs the third-party widgets (Panel Colorizer, Plasmusic Toolbar, Window Title), the `baikonur` desktop theme, Geist, the launcher widget, and the launcher daemon as a user service.
+- `install.sh` installs the third-party widgets (Panel Colorizer, Plasmusic Toolbar, Window Title), the `baikonur` desktop theme, Geist, the launcher widget, the launcher daemon as a user service, and a path unit that keeps the theme applied.
+- `theme.sh` applies the Baikonur desktop theme when it is not the active one. `systemd/baikonur-theme.path` runs it whenever `~/.config/plasmarc` changes.
 - `apply.sh` applies the Baikonur desktop theme and the fonts, leaves the global color scheme alone (the panels follow whatever light or dark scheme is active), then rebuilds both panels from `panels.js` through the Plasma scripting API. It backs up the applet config first and prints the undo command. `--dock-autohide` builds the dock in autohide mode.
 - `dock.sh on|off` toggles dock autohide on the live layout. With autohide the dock reserves no space, so windows take everything below the top bar and the dock slides in from the bottom edge. It also unloads KWin's screenedge effect, which otherwise paints the Breeze glow bar on the dock's trigger edge, and `off` loads it again.
 - `panels.js` is the whole panel layout, including the Panel Colorizer settings as JSON.
-- `theme/baikonur` is Breeze with an empty `tasks.svg`, so the dock draws no task frames. It ships no `colors` file, so text and panel colors follow the active system color scheme (light or dark). The margin hints in that file set the dock icon size.
+- `theme/baikonur` is Breeze with its own `tasks.svg`: no frames, a dot under running apps, a highlight-colored pill under the active window, a faint rounded background on hover. `theme/gen-tasks.py` generates that file, edit the script rather than the SVG. It ships no `colors` file, so colors follow the active system color scheme (light or dark). The margin hints in the SVG set the dock icon size.
 - `wallpaper/baikonur` is a solid wallpaper package matching the kitty background: `#f0edec` in light mode, black in dark mode. Plasma picks `contents/images_dark` on its own when the color scheme is dark, and `apply.sh` sets it on every desktop.
-- `launcher/plasmoid` is the Baikonur widget: two floating Plasma dialogs, Alt+Space, talks to the daemon over localhost. Colors come from the active color scheme (View set), so it follows light and dark like the panels.
+- `launcher/plasmoid` is the Baikonur widget: two floating Plasma dialogs, Alt+Space, talks to the daemon over localhost. Colors come from the active color scheme (View set), so it follows light and dark like the panels. Picking an app that already has a window activates that window through Plasma's task model and tells the daemon to record the query without spawning (`spawn: false` on `/launch`).
 - `launcher/daemon` is a Bun process on `@ff-labs/fff-bun`. Apps are indexed as stub files so fff frecency ranks them. Pins live in `~/.config/baikonur/pins.json`.
 
 ## Notes
 
-- Dock icon pitch follows panel thickness. 60px panel with 6px theme margins gives 48px icons.
+- Dock icon pitch follows panel thickness. 60px panel with 4px top and 8px bottom theme margins gives 48px icons, with the indicator in the bottom margin.
 - Plasma de-floats a panel when a maximized window touches it. The dock container is drawn inset from the panel, so it never reaches the screen edge.
 - Restarting plasmashell right after `apply.sh` loses panel geometry. The script waits five seconds for that reason.
+- Switching the global theme (System Settings or `plasma-apply-lookandfeel`) resets the Plasma style to Breeze, which brings the blue task frames back on the dock. `baikonur-theme.path` reapplies the theme within a second of that. If it ever sticks, run `./theme.sh` or check `systemctl --user status baikonur-theme.path`. Switching only the color scheme with `plasma-apply-colorscheme BreezeLight|BreezeDark` never touches it.

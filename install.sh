@@ -32,9 +32,9 @@ fi
 (cd "$here/launcher/daemon" && bun install --silent)
 mkdir -p "$HOME/.config/baikonur" "$HOME/.config/systemd/user"
 [ -f "$HOME/.config/baikonur/pins.json" ] || cp "$here/launcher/pins.example.json" "$HOME/.config/baikonur/pins.json"
-ln -sfn "$here/systemd/baikonur.service" "$HOME/.config/systemd/user/baikonur.service"
+for u in baikonur.service baikonur-theme.service baikonur-theme.path; do ln -sfn "$here/systemd/$u" "$HOME/.config/systemd/user/$u"; done
 systemctl --user daemon-reload
-systemctl --user enable --now baikonur.service
+systemctl --user enable --now baikonur.service baikonur-theme.path
 
 "$here/window-scale.sh"
 

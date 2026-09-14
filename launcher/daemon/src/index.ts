@@ -89,12 +89,12 @@ function search(text: string): Section[] {
   return sections;
 }
 
-function launch(kind: string, id: string, query: string) {
+function launch(kind: string, id: string, query: string, spawn = true) {
   if (kind === "app") {
     const app = apps.byId(id);
     if (!app) return false;
     for (const [stub, a] of apps.byStub) if (a.id === id) appFinder.trackQuery(query, stub);
-    Bun.spawn(["kioclient", "exec", app.path], { stdout: "ignore", stderr: "ignore" }).unref();
+    if (spawn) Bun.spawn(["kioclient", "exec", app.path], { stdout: "ignore", stderr: "ignore" }).unref();
     return true;
   }
   fileFinder.trackQuery(query, id.startsWith(home + "/") ? id.slice(home.length + 1) : id);
@@ -114,8 +114,8 @@ Bun.serve({
       return json({ sections: text ? search(text) : [favorites()] });
     }
     if (url.pathname === "/launch" && req.method === "POST") {
-      const body = (await req.json()) as { kind: string; id: string; query?: string };
-      return json({ ok: launch(body.kind, body.id, body.query ?? "") });
+      const body = (await req.json()) as { kind: string; id: string; query?: string; spawn?: boolean };
+      return json({ ok: launch(body.kind, body.id, body.query ?? "", body.spawn ?? true) });
     }
     if (url.pathname === "/health") {
       return json({ apps: apps.byStub.size, files: fileFinder.getScanProgress() });

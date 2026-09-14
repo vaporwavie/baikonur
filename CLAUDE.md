@@ -1,0 +1,48 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## What this is
+
+A per-user Plasma 6 desktop layout (macOS-style top bar + floating dock) plus a Raycast-style launcher, both named Baikonur. Everything installs under `~/.local` and `~/.config`, no root. The README covers install/apply/dock usage and the layout gotchas (icon pitch, de-floating, restart timing). Read it first.
+
+## Commands
+
+Shell scripts (run from the repo root, they resolve their own path):
+
+- `./install.sh` one-time: third-party widgets, theme symlink, Geist, plasmoid, daemon deps, user service.
+- `./apply.sh [--dock-autohide]` rebuilds both panels from `panels.js`. Backs up the applet rc and prints the undo command.
+- `./dock.sh on|off` toggles dock autohide on the live layout.
+
+Launcher daemon (`launcher/daemon`, Bun, no test suite or linter):
+
+```sh
+cd launcher/daemon
+bun install
+bunx tsc --noEmit                  # typecheck (tsconfig is strict, noEmit)
+bun run src/index.ts               # run in foreground, BAIKONUR_PORT overrides 47421
+systemctl --user restart baikonur  # pick up daemon changes in the installed service
+curl -s localhost:47421/health     # apps indexed + file scan progress
+curl -s 'localhost:47421/q?text=zed'
+```
+
+Plasmoid (`launcher/plasmoid`): after editing QML, reinstall and restart the shell.
+
+```sh
+kpackagetool6 -t Plasma/Applet -u launcher/plasmoid
+plasmashell --replace &
+```
+
+Theme (`theme/baikonur`) is symlinked into `~/.local/share/plasma/desktoptheme`, so edits are live after `plasmashell --replace`. `tasks.svg` is generated: edit `theme/gen-tasks.py` and run it.
+
+## Architecture
+
+Three pieces that only meet at runtime:
+
+1. **Layout** (`panels.js`, `apply.sh`, `dock.sh`). `panels.js` is a Plasma scripting-API script sent over D-Bus via `org.kde.PlasmaShell.evaluateScript`. `apply.sh` prepends `var dockAutohide = true|false;` to it, so the script must keep tolerating an undefined `dockAutohide`. It wipes all panels and rebuilds them, so any panel change belongs in `panels.js`, not in the live config. Panel Colorizer settings are embedded as a JSON string in `globalSettings`. The dock adds `dev.luiz.baikonur` to the top bar and binds `Alt+Space` there.
+
+2. **Launcher daemon** (`launcher/daemon/src`). HTTP on `127.0.0.1:47421` with three routes: `GET /q?text=` (empty text returns favorites, otherwise Applications + Files sections), `POST /launch {kind,id,query}`, `GET /health`. Search is `@ff-labs/fff-bun`. Apps are not indexed directly: `apps.ts` writes one stub file per `.desktop` entry into `~/.cache/baikonur/apps/<Name>.app` and points a `FileFinder` at that directory, so fff frecency ranks apps like files. `desktop.ts` parses `.desktop` files from the XDG app dirs (KDE `OnlyShowIn`/`NotShowIn` honored, first dir wins per filename). Launching goes through `kioclient exec` for apps and `xdg-open` for files, and records the query with `trackQuery` to feed frecency. Frecency/history DBs live in `~/.local/share/baikonur`. Pins come from `~/.config/baikonur/pins.json` (array of `.desktop` ids) and always lead the favorites list.
+
+3. **Plasmoid** (`launcher/plasmoid/contents/ui/main.qml`). Two `PlasmaCore.Dialog`s (input, results) with no compact representation of their own. Talks to the daemon via `XMLHttpRequest` against the `endpoint` property. The section/item JSON shape (`{sections:[{title,icon,items:[{id,kind,title,subtitle,icon}]}]}`) is the contract between the two; change it on both sides.
+
+`systemd/baikonur.service` hardcodes the daemon path as `%h/Workspace/baikonur/...`, so the repo location matters for the installed service.

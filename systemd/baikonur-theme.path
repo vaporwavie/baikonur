@@ -1,0 +1,8 @@
+[Unit]
+Description=Reapply the Baikonur desktop theme after a global theme switch
+
+[Path]
+PathModified=%h/.config/plasmarc
+
+[Install]
+WantedBy=default.target

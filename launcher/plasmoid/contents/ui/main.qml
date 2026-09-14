@@ -4,6 +4,7 @@ import org.kde.plasma.plasmoid
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.core as PlasmaCore
 import QtQuick.Window
+import org.kde.taskmanager as TaskManager
 
 PlasmoidItem {
     id: root
@@ -63,14 +64,32 @@ PlasmoidItem {
         list.currentIndex = next.length > 0 ? 0 : -1;
     }
 
+    function runningWindow(appId) {
+        const want = "applications:" + appId;
+        for (let i = 0; i < tasks.count; i++) {
+            const idx = tasks.index(i, 0);
+            if (!tasks.data(idx, TaskManager.AbstractTasksModel.IsWindow)) continue;
+            if (String(tasks.data(idx, TaskManager.AbstractTasksModel.LauncherUrlWithoutIcon)) === want) return idx;
+            if (tasks.data(idx, TaskManager.AbstractTasksModel.AppId) + ".desktop" === appId) return idx;
+        }
+        return null;
+    }
+
     function launch(index) {
         if (index < 0 || index >= results.count) return;
         const it = results.get(index);
+        const running = it.kind === "app" ? runningWindow(it.itemId) : null;
+        if (running !== null) tasks.requestActivate(running);
         const xhr = new XMLHttpRequest();
         xhr.open("POST", endpoint + "/launch");
         xhr.setRequestHeader("content-type", "application/json");
-        xhr.send(JSON.stringify({ kind: it.kind, id: it.itemId, query: field.text.trim() }));
+        xhr.send(JSON.stringify({ kind: it.kind, id: it.itemId, query: field.text.trim(), spawn: running === null }));
         win.visible = false;
+    }
+
+    TaskManager.TasksModel {
+        id: tasks
+        groupMode: TaskManager.TasksModel.GroupDisabled
     }
 
     ListModel { id: results }
