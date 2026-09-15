@@ -19,6 +19,9 @@ mkdir -p "$HOME/.local/share/plasma/desktoptheme"
 ln -sfn "$here/theme/baikonur" "$HOME/.local/share/plasma/desktoptheme/baikonur"
 mkdir -p "$HOME/.local/share/wallpapers"
 ln -sfn "$here/wallpaper/baikonur" "$HOME/.local/share/wallpapers/baikonur"
+mkdir -p "$HOME/.local/share/color-schemes"
+ln -sfn "$here/color-schemes/GrokNight.colors" "$HOME/.local/share/color-schemes/GrokNight.colors"
+ln -sfn "$here/color-schemes/GrokDay.colors" "$HOME/.local/share/color-schemes/GrokDay.colors"
 
 if ! fc-list | grep -q Geist; then
   curl -sfL -o "$tmp/geist.zip" https://github.com/vercel/geist-font/releases/download/v1.7.2/geist-font-v1.7.2.zip

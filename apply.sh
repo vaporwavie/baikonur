@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Applies the macOS-style Plasma layout. KRunner stays the launcher (Alt+Space). Reversible: restores from the backup path printed below.
+# Applies the macOS-style Plasma layout and the matching Grok color scheme.
+# KRunner stays the launcher (Alt+Space). Reversible: restores from the backup path printed below.
 set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
 autohide=false
@@ -13,6 +14,7 @@ cp -a "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc" "$bak"
 echo "backup: $bak"
 
 "$here/theme.sh"
+"$here/colors.sh"
 
 font='Geist,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
 for k in font menuFont toolBarFont; do kwriteconfig6 --file kdeglobals --group General --key "$k" "$font"; done
