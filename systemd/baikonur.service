@@ -1,9 +1,11 @@
 [Unit]
 Description=Baikonur launcher daemon
+PartOf=graphical-session.target
+After=graphical-session.target
 
 [Service]
 ExecStart=%h/.bun/bin/bun run %h/Workspace/baikonur/launcher/daemon/src/index.ts
 Restart=on-failure
 
 [Install]
-WantedBy=default.target
+WantedBy=graphical-session.target
