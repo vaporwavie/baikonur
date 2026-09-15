@@ -1,0 +1,13 @@
+[Unit]
+Description=Switch Baikonur color scheme with the day-night cycle
+PartOf=graphical-session.target
+After=graphical-session.target plasma-knighttimed.service
+Wants=plasma-knighttimed.service
+
+[Service]
+ExecStart=%h/Workspace/baikonur/colors.sh --watch
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=graphical-session.target

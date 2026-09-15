@@ -10,9 +10,9 @@ A per-user Plasma 6 desktop layout (macOS-style top bar + floating dock) plus a 
 
 Shell scripts (run from the repo root, they resolve their own path):
 
-- `./install.sh` one-time: third-party widgets, theme symlink, GrokNight/GrokDay color schemes, Geist, plasmoid, daemon deps, user service.
-- `./apply.sh [--dock-autohide]` rebuilds both panels from `panels.js` and applies GrokNight or GrokDay from the OS color-scheme preference. Backs up the applet rc and prints the undo command.
-- `./colors.sh` installs the color schemes and applies the matching one. Does not rebuild panels.
+- `./install.sh` one-time: third-party widgets, theme symlink, GrokNight/GrokDay color schemes, Geist, plasmoid, daemon deps, user services (launcher, theme path, colors).
+- `./apply.sh [--dock-autohide]` rebuilds both panels from `panels.js` and applies GrokDay or GrokNight from the NightTime schedule. Backs up the applet rc and prints the undo command.
+- `./colors.sh [once|day|night|--watch]` installs the color schemes and applies one. Default/`once` reads KDE NightTime (same midpoints as the global theme autoswitcher). `--watch` is `baikonur-colors.service`. Does not rebuild panels.
 - `./dock.sh on|off` toggles dock autohide on the live layout.
 
 Launcher daemon (`launcher/daemon`, Bun, no test suite or linter):
